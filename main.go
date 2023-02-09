@@ -15,13 +15,14 @@ import (
 	"github.com/onrik/logrus/filename"
 	log "github.com/sirupsen/logrus"
 	"github.com/sirupsen/logrus/hooks/writer"
+	"github.com/tufin/oasdiff-service/internal"
 )
 
 func main() {
 	serve(
-		[]string{"oasdiff"},
+		[]string{"/diff"},
 		[]string{http.MethodPost},
-		[]func(http.ResponseWriter, *http.Request){func(http.ResponseWriter, *http.Request) {}},
+		[]func(http.ResponseWriter, *http.Request){internal.Diff},
 	)
 }
 
