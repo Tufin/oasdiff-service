@@ -112,8 +112,7 @@ func createFile(r *http.Request, dir string, filename string) (*os.File, int) {
 		return nil, http.StatusInternalServerError
 	}
 
-	// Get a reference to the fileHeaders.
-	// They are accessible only after ParseMultipartForm is called
+	// a reference to the fileHeaders are accessible only after ParseMultipartForm is called
 	files := r.MultipartForm.File[filename]
 	for _, fileHeader := range files {
 		// Open the file
