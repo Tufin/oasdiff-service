@@ -29,6 +29,7 @@ func Diff(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.WriteHeader(http.StatusCreated)
 	err := yaml.NewEncoder(w).Encode(diffReport)
 	if err != nil {
 		log.Errorf("failed to encode diff report with %v", err)
@@ -42,13 +43,13 @@ func createDiffReport(base *os.File, revision *os.File) (*diff.Diff, int) {
 
 	s1, err := loader.LoadFromFile(base.Name())
 	if err != nil {
-		log.Infof("failed to load base spec from %q with %v", base, err)
+		log.Infof("failed to load base spec from %q with %q", base.Name(), err)
 		return nil, http.StatusBadRequest
 	}
 
 	s2, err := load.From(loader, revision.Name())
 	if err != nil {
-		log.Infof("failed to load revision spec from %q with %v", revision, err)
+		log.Infof("failed to load revision spec from %q with %q", revision.Name(), err)
 		return nil, http.StatusBadRequest
 	}
 
@@ -66,7 +67,7 @@ func createDiffReport(base *os.File, revision *os.File) (*diff.Diff, int) {
 
 	diffReport, err := diff.Get(config, s1, s2)
 	if err != nil {
-		log.Infof("failed to load revision spec from %q with %v", revision, err)
+		log.Infof("failed to load revision spec from %q with %q", revision.Name(), err)
 		return nil, http.StatusBadRequest
 	}
 
