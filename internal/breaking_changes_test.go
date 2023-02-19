@@ -14,7 +14,7 @@ import (
 	"github.com/tufin/oasdiff-service/internal"
 )
 
-func TestDiff(t *testing.T) {
+func TestBreakingChanges(t *testing.T) {
 
 	body := new(bytes.Buffer)
 	writer := multipart.NewWriter(body)
@@ -39,7 +39,7 @@ func TestDiff(t *testing.T) {
 	r.Header.Set("Content-Type", writer.FormDataContentType())
 	w := httptest.NewRecorder()
 
-	internal.Diff(w, r)
+	internal.BreakingChanges(w, r)
 
 	require.Equal(t, http.StatusCreated, w.Result().StatusCode)
 	report, err := ioutil.ReadAll(w.Result().Body)
