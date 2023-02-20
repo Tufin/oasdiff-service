@@ -3,7 +3,6 @@ package internal_test
 import (
 	"bytes"
 	"io"
-	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
@@ -12,6 +11,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 	"github.com/tufin/oasdiff-service/internal"
+	"github.com/tufin/oasdiff/checker"
+	"gopkg.in/yaml.v3"
 )
 
 func TestBreakingChanges(t *testing.T) {
@@ -42,7 +43,7 @@ func TestBreakingChanges(t *testing.T) {
 	internal.BreakingChanges(w, r)
 
 	require.Equal(t, http.StatusCreated, w.Result().StatusCode)
-	report, err := ioutil.ReadAll(w.Result().Body)
-	require.NoError(t, err)
-	require.NotEmpty(t, report)
+	var report map[string][]checker.BackwardCompatibilityError
+	yaml.NewDecoder(w.Result().Body).Decode(&report)
+	require.True(t, len(report["breaking-changes"]) > 0)
 }

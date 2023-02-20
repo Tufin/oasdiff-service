@@ -3,7 +3,6 @@ package internal
 import (
 	"net/http"
 	"os"
-	"path/filepath"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/tufin/oasdiff/checker"
@@ -30,7 +29,7 @@ func BreakingChanges(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusCreated)
-	err := yaml.NewEncoder(w).Encode(map[string]interface{}{"breaking-changes": breakingChanges})
+	err := yaml.NewEncoder(w).Encode(map[string][]checker.BackwardCompatibilityError{"breaking-changes": breakingChanges})
 	if err != nil {
 		log.Errorf("failed to encode diff report with %v", err)
 	}
