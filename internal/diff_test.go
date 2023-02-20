@@ -3,7 +3,6 @@ package internal_test
 import (
 	"bytes"
 	"io"
-	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
@@ -12,6 +11,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 	"github.com/tufin/oasdiff-service/internal"
+	"github.com/tufin/oasdiff/diff"
+	"gopkg.in/yaml.v3"
 )
 
 func TestDiff(t *testing.T) {
@@ -42,7 +43,8 @@ func TestDiff(t *testing.T) {
 	internal.Diff(w, r)
 
 	require.Equal(t, http.StatusCreated, w.Result().StatusCode)
-	report, err := ioutil.ReadAll(w.Result().Body)
+	var report diff.Diff
+	yaml.NewDecoder(w.Result().Body).Decode(&report)
 	require.NoError(t, err)
-	require.NotEmpty(t, report)
+	require.NotEmpty(t, report.GetSummary())
 }
