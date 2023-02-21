@@ -38,17 +38,17 @@ func Diff(w http.ResponseWriter, r *http.Request) {
 func createDiffReport(base *os.File, revision *os.File) (*diff.Diff, int) {
 
 	loader := openapi3.NewLoader()
-	loader.IsExternalRefsAllowed = true
+	loader.IsExternalRefsAllowed = false
 
 	s1, err := loader.LoadFromFile(base.Name())
 	if err != nil {
-		log.Infof("failed to load base spec from %q with %q", base.Name(), err)
+		log.Infof("failed to load base spec from %q with %v", base.Name(), err)
 		return nil, http.StatusBadRequest
 	}
 
 	s2, err := load.From(loader, revision.Name())
 	if err != nil {
-		log.Infof("failed to load revision spec from %q with %q", revision.Name(), err)
+		log.Infof("failed to load revision spec from %q with %v", revision.Name(), err)
 		return nil, http.StatusBadRequest
 	}
 

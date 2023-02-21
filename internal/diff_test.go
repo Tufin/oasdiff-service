@@ -46,5 +46,5 @@ func TestDiff(t *testing.T) {
 	var report diff.Diff
 	yaml.NewDecoder(w.Result().Body).Decode(&report)
 	require.NoError(t, err)
-	require.NotEmpty(t, report.GetSummary())
+	require.False(t, report.Empty())
 }
