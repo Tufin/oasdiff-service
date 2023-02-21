@@ -20,9 +20,9 @@ import (
 
 func main() {
 	serve(
-		[]string{"/diff"},
-		[]string{http.MethodPost},
-		[]func(http.ResponseWriter, *http.Request){internal.Diff},
+		[]string{"/diff", "/breaking-changes"},
+		[]string{http.MethodPost, http.MethodPost},
+		[]func(http.ResponseWriter, *http.Request){internal.Diff, internal.BreakingChanges},
 	)
 }
 
