@@ -4,6 +4,7 @@ steps:
       - '-c'
       - >
         go install github.com/jstemmer/go-junit-report/v2@latest
+        
         2>&1 go test -timeout 1m -v ./... | /go/bin/go-junit-report
         -set-exit-code -iocopy -out ${SHORT_SHA}_test_log.xml
     id: Test
