@@ -4,7 +4,7 @@ steps:
       - '-c'
       - >
         go install github.com/jstemmer/go-junit-report/v2@latest
-        
+
         2>&1 go test -timeout 1m -v ./... | /go/bin/go-junit-report
         -set-exit-code -iocopy -out ${SHORT_SHA}_test_log.xml
     id: Test
@@ -50,7 +50,7 @@ options:
   logging: CLOUD_LOGGING_ONLY
 substitutions:
   _PLATFORM: managed
-  _SERVICE_NAME: otp
+  _SERVICE_NAME: oasdiff
   _LABELS: gcb-trigger-id=a2e47103-7a5b-47a7-b79f-a0febd6b213f
   _TRIGGER_ID: a2e47103-7a5b-47a7-b79f-a0febd6b213f
   _DEPLOY_REGION: us-central1
@@ -58,4 +58,4 @@ substitutions:
 tags:
   - gcp-cloud-build-deploy-cloud-run
   - gcp-cloud-build-deploy-cloud-run-managed
-  - otp
+  - oasdiff
