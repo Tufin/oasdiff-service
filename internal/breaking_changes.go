@@ -29,6 +29,7 @@ func BreakingChanges(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusCreated)
+	w.Header().Set("Content-Type", "application/yaml")
 	err := yaml.NewEncoder(w).Encode(map[string][]checker.BackwardCompatibilityError{"breaking-changes": breakingChanges})
 	if err != nil {
 		log.Errorf("failed to encode diff report with %v", err)
@@ -49,7 +50,6 @@ func calcBreakingChanges(r *http.Request, base string, revision string) ([]check
 		log.Infof("failed to load base spec from %q with %v", base, err)
 		return nil, http.StatusBadRequest
 	}
-
 	s2, err := checker.LoadOpenAPISpecInfo(revision)
 	if err != nil {
 		log.Infof("failed to load revision spec from %q with %v", revision, err)
