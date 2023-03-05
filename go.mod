@@ -8,7 +8,7 @@ require (
 	github.com/onrik/logrus v0.10.0
 	github.com/sirupsen/logrus v1.9.0
 	github.com/stretchr/testify v1.8.2
-	github.com/tufin/oasdiff v1.3.5
+	github.com/tufin/oasdiff v1.3.9
 	gopkg.in/yaml.v3 v3.0.1
 )
 
