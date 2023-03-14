@@ -3,7 +3,7 @@ module github.com/tufin/oasdiff-service
 go 1.20
 
 require (
-	github.com/getkin/kin-openapi v0.114.0
+	github.com/getkin/kin-openapi v0.115.0
 	github.com/gorilla/mux v1.8.0
 	github.com/onrik/logrus v0.10.0
 	github.com/sirupsen/logrus v1.9.0
