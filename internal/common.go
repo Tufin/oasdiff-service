@@ -28,10 +28,18 @@ func CreateConfig() *diff.Config {
 
 func CreateFiles(r *http.Request) (string, *os.File, *os.File, int) {
 
-	// 32 MB is the default used by FormFile() function
-	if err := r.ParseMultipartForm(4); err != nil {
-		log.Errorf("failed to parse HTTP request files with %v", err)
-		return "", nil, nil, http.StatusInternalServerError
+	contentType := r.Header.Get("Content-Type")
+	if contentType == "multipart/form-data" {
+		// 32 MB is the default used by FormFile() function
+		if err := r.ParseMultipartForm(4); err != nil {
+			log.Errorf("failed to parse 'multipart/form-data' request files with '%v'", err)
+			return "", nil, nil, http.StatusBadRequest
+		}
+	} else {
+		if err := r.ParseForm(); err != nil {
+			log.Errorf("failed to parse form request with '%v'", err)
+			return "", nil, nil, http.StatusBadRequest
+		}
 	}
 
 	// create a temporary directory
