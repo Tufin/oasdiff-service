@@ -49,10 +49,11 @@ func CreateFiles(r *http.Request) (string, *os.File, *os.File, int) {
 		return "", nil, nil, code
 	}
 
-	if strings.HasPrefix(r.Header.Get("Content-Type"), "multipart/form-data") {
+	contentType := r.Header.Get("Content-Type")
+	if strings.HasPrefix(contentType, "multipart/form-data") {
 		// 32 MB is the default used by FormFile() function
 		if err := r.ParseMultipartForm(4); err != nil {
-			log.Errorf("failed to parse 'multipart/form-data' request files with '%v'", err)
+			log.Infof("failed to parse 'multipart/form-data' request files with '%v'", err)
 			return "", nil, nil, http.StatusBadRequest
 		}
 		if code := copyMultipartFormData(r, "base", base); code != http.StatusOK {
@@ -61,7 +62,7 @@ func CreateFiles(r *http.Request) (string, *os.File, *os.File, int) {
 		if code := copyMultipartFormData(r, "revision", revision); code != http.StatusOK {
 			return "", nil, nil, code
 		}
-	} else {
+	} else if contentType == "application/x-www-form-urlencoded" {
 		if err := r.ParseForm(); err != nil {
 			log.Errorf("failed to parse form request with '%v'", err)
 			return "", nil, nil, http.StatusBadRequest
@@ -72,6 +73,9 @@ func CreateFiles(r *http.Request) (string, *os.File, *os.File, int) {
 		if code := copyFormData(r, "revision", revision); code != http.StatusOK {
 			return "", nil, nil, code
 		}
+	} else {
+		log.Infof("unsupported content type '%s'", contentType)
+		return "", nil, nil, http.StatusBadRequest
 	}
 
 	return dir, base, revision, http.StatusOK
