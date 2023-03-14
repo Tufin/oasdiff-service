@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <style>
+        .parent {
+            display: flex;
+        }
+        #child {
+            width: 120px;
+            background: lightblue;
+            /* Just so it's visible */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="form">
+            <form action="http://localhost:8080/breaking-changes" name="confirmationForm" method="post" target="_self">
+
+                <div class="parent">
+                    <div class="child">
+                        <br>
+                        <h1>Original Spec</h1>
+                        <br>
+                        <textarea id="base" class="text" cols="50" rows="20" name="base"></textarea>
+                    </div>
+                    <div class="child">
+                        <br>
+                        <h1>Revised Spec</h1>
+                        <br>
+                        <textarea id="revision" class="text" cols="50" rows="20" name="revision"></textarea>
+                    </div>
+
+                </div>
+
+                <input type="submit" value="Breaking Changes" class="submitButton">
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
